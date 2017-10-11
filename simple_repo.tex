@@ -1,0 +1,363 @@
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass{beamer}
+
+\mode<presentation> {
+
+% The Beamer class comes with a number of default slide themes
+% which change the colors and layouts of slides. Below this is a list
+% of all the themes, uncomment each in turn to see what they look like.
+
+%\usetheme{default}
+%\usetheme{AnnArbor}
+%\usetheme{Antibes}
+%\usetheme{Bergen}
+%%\usetheme{Berkeley}
+%\usetheme{Berlin}
+%\usetheme{Boadilla}
+%\usetheme{CambridgeUS}
+%\usetheme{Copenhagen}
+\usetheme{Darmstadt}
+%\usetheme{Dresden}
+%\usetheme{Frankfurt}
+%\usetheme{Goettingen}
+%\usetheme{Hannover}
+%\usetheme{Ilmenau}
+%\usetheme{JuanLesPins}
+%\usetheme{Luebeck}
+%\usetheme{Madrid}
+%\usetheme{Malmoe}
+%\usetheme{Marburg}
+%\usetheme{Montpellier}
+%\usetheme{PaloAlto}
+%\usetheme{Pittsburgh}
+%\usetheme{Rochester}
+%\usetheme{Singapore}
+%\usetheme{Szeged}
+%\usetheme{Warsaw}
+
+% As well as themes, the Beamer class has a number of color themes
+% for any slide theme. Uncomment each of these in turn to see how it
+% changes the colors of your current slide theme.
+
+%\usecolortheme{albatross}
+%%\usecolortheme{beaver}
+%\usecolortheme{beetle}
+%\usecolortheme{crane}
+%\usecolortheme{dolphin}
+%\usecolortheme{dove}
+%\usecolortheme{fly}
+%\usecolortheme{lily}
+%\usecolortheme{orchid}
+%\usecolortheme{rose}
+%\usecolortheme{seagull}
+%\usecolortheme{seahorse}
+%\usecolortheme{whale}
+%\usecolortheme{wolverine}
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+
+%\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+}
+
+\usepackage{color}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+%\usepackage[normalem]{ulem}
+\usepackage{cancel}
+%\usepackage{listings}
+\usepackage{verbatim}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Ecto made even simpler]{Ecto made \cancel{simple}... even simpler} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Bernhard St\"ocker} % Your name
+\institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+Recogizer Group GmbH\\ % Your institution for the title page
+\medskip
+\textit{bernhard.stoecker@recogizer.de} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+
+\begin{document}
+
+\begin{frame}
+\titlepage % Print the title page as the first slide
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Overview} % Table of contents slide, comment this block out to remove it
+%\tableofcontents % Throughout your presentation, if you choose to use \section{} and \subsection{} commands, these will automatically be printed on this slide as an overview of your presentation
+%\end{frame}
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+\section{Queries and Problems} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+%\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+
+\begin{frame}
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\Huge{\centerline{Queries and Problems}}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\begin{verbatim}
+  def folder_by_parent(parent_id) do
+    Folder
+    |> where(^[{:parent_id, parent_id}])
+    |> YourApp.Repo.all
+  end
+\end{verbatim}
+\pause
+\centerline{What about the root folder?}
+\pause
+\begin{verbatim}
+  folder_by_parent(nil)
+\end{verbatim}
+\begin{tiny}
+\begin{verbatim}
+  # ** (ArgumentError) nil given for :parent_uuid.
+  # Comparison with nil is forbidden as it is unsafe.
+  # Instead write a query with is_nil/1, for example: is_nil(s.parent_uuid)
+    (ecto) lib/ecto/query/builder/filter.ex:127: Ecto.Query.Builder.Filter.kw!/7
+    (ecto) lib/ecto/query/builder/filter.ex:120: Ecto.Query.Builder.Filter.kw!/3
+    (ecto) lib/ecto/query/builder/filter.ex:102: Ecto.Query.Builder.Filter.filter!/6
+    (ecto) lib/ecto/query/builder/filter.ex:114: Ecto.Query.Builder.Filter.filter!/7
+
+\end{verbatim}
+\end{tiny}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\begin{verbatim}
+  def folder_by_parent(nil) do
+    query = from f in Folder,
+            where: is_nil(field(f, :parent_uuid))
+    YourApp.Repo.all(query)
+  end
+  def folder_by_parent(org_id) do
+    Folder
+    |> where(^[{:parent_id, org_id}])
+    |> YourApp.Repo.all
+  end
+\end{verbatim}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{What when I need data scoped to several organizations?}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\begin{verbatim}
+  def folders_by_orgs(org_ids) do
+    query = from f in Folder,
+            where([f], field(f, :org_id) in ^org_ids)
+    YourApp.Repo.all(query)
+  end
+\end{verbatim}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{What do queries look like in real life?}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\begin{itemize}
+\item Belongs to an organization from a list (thinking of authentication/authorization)
+\item Is a rootfolder
+\item Has some state (e.g. 'active')
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\begin{verbatim}
+  def active_rootfolder(org_ids) do
+    Folder
+    |> fn queriable ->
+      from m in queriable,
+      where: is_nil(field(m, :parent_id))
+    end.()
+    |> where([m], field(m, :org_id) in ^org_ids)
+    |> where(^[{:state, "active"}])
+    |> YourApp.Repo.all
+  end
+\end{verbatim}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{What if these statements can be expressed in a simple keyword list?}
+\end{frame}
+
+
+%------------------------------------------------
+\section{SimpleRepo} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\begin{tiny}
+\begin{verbatim}
+  def active_rootfolder(org_ids) do
+    Folder
+    |> fn queriable ->
+      from m in queriable,
+      where: is_nil(field(m, :parent_id))
+    end.()
+    |> where([m], field(m, :org_id) in ^org_ids)
+    |> where(^[{:state, "active"}])
+    |> YourApp.Repo.all
+  end
+\end{verbatim}
+\end{tiny}
+\begin{verbatim}
+  def active_rootfolder(org_ids) do
+    SimpleRepo.Query.scoped(
+      Folder,
+      [parent_id: nil, org_id: org_ids, state: "active"]
+    )
+    |> YourApp.Repo.all
+  end
+\end{verbatim}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{Even shorter? Redefine Repo:}
+\begin{verbatim}
+  defmodule YourApp.Repo do
+    use Ecto.Repo, otp_app: :your_app
+    use SimpleRepo.Scoped, repo: __MODULE__
+  end
+\end{verbatim}
+\pause
+\centerline{In code:}
+\pause
+\begin{verbatim}
+  def active_rootfolder(org_ids) do
+    YourApp.Repo.all_scoped(
+      Folder,
+      [parent_id: nil, org_id: org_ids, state: "active"]
+    )
+  end
+\end{verbatim}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{Queries}
+\begin{itemize}
+\item \{key, nil\}
+\item \{key, value\}
+\item \{key, value\_list\}
+\item \{key, \{:like, pattern\}\}
+\item \{key, \{:not, nil\}\}
+\item \{key, \{:not, value\}\}
+\item \{key, \{:not, value\_list\}\}
+\item \{key, \{:not\_like, pattern\}\}
+\item \{key, \{$:<$, value\}\}
+\item \{key, \{$:<=$, value\}\}
+\item \{key, \{$:>$, value\}\}
+\item \{key, \{$:>=$, value\}\}
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{Scope Functions}
+\begin{itemize}
+\item by\_id\_scoped\textbackslash4
+\item one\_scoped\textbackslash3
+\item all\_scoped\textbackslash3
+\item update\_scoped\textbackslash5
+\item update\_all\_scoped\textbackslash4
+\item delete\_scoped\textbackslash4
+\item delete\_all\_scoped\textbackslash3
+\item aggregate\_scoped\textbackslash5
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{You like it? Then use it. And if you have more ideas: Contribute}
+\begin{itemize}
+\item github.com/xofspades/simple\_repo
+\pause
+\item github.com/xofspades/simple\_controller
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}
+\begin{Huge}
+\centerline{SimpleRepo \begin{small}used at \end{small} \includegraphics[width=0.15\textwidth]{recogizer_logo_EN_center.png}}
+\end{Huge}
+\vspace{30 px}
+We are hiring:
+\begin{itemize}
+\item Backend Developer
+\item Data Scientist
+\end{itemize}
+Using:
+\begin{itemize}
+\item Scala
+\item Python
+\item Elixir
+\item R
+\end{itemize}
+
+\end{frame}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
