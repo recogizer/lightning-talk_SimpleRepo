@@ -132,10 +132,10 @@ Recogizer Group GmbH\\ % Your institution for the title page
 \end{verbatim}
 \pause
 \centerline{What about the root folder?}
-\pause
 \begin{verbatim}
   folder_by_parent(nil)
 \end{verbatim}
+\pause
 \begin{tiny}
 \begin{verbatim}
   # ** (ArgumentError) nil given for :parent_uuid.
@@ -290,6 +290,23 @@ Recogizer Group GmbH\\ % Your institution for the title page
 
 \begin{frame}[fragile]
 \frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\centerline{Scope Functions}
+\begin{itemize}
+\item by\_id\_scoped\textbackslash4
+\item one\_scoped\textbackslash3
+\item all\_scoped\textbackslash3
+\item update\_scoped\textbackslash5
+\item update\_all\_scoped\textbackslash4
+\item delete\_scoped\textbackslash4
+\item delete\_all\_scoped\textbackslash3
+\item aggregate\_scoped\textbackslash5
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
 \centerline{Queries}
 \begin{itemize}
 \item \{key, nil\}
@@ -304,23 +321,6 @@ Recogizer Group GmbH\\ % Your institution for the title page
 \item \{key, \{$:<=$, value\}\}
 \item \{key, \{$:>$, value\}\}
 \item \{key, \{$:>=$, value\}\}
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
-\centerline{Scope Functions}
-\begin{itemize}
-\item by\_id\_scoped\textbackslash4
-\item one\_scoped\textbackslash3
-\item all\_scoped\textbackslash3
-\item update\_scoped\textbackslash5
-\item update\_all\_scoped\textbackslash4
-\item delete\_scoped\textbackslash4
-\item delete\_all\_scoped\textbackslash3
-\item aggregate\_scoped\textbackslash5
 \end{itemize}
 \end{frame}
 
