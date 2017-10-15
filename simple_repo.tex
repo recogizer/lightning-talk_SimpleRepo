@@ -78,6 +78,12 @@
 \usepackage{verbatim}
 \usepackage{graphbox}
 
+\setbeamertemplate{footline}[text line]{%
+  \parbox{\linewidth}{\vspace*{0pt}\hfill\insertframenumber/\inserttotalframenumber\hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}
+}}
+\setbeamertemplate{navigation symbols}{}
+%\cfoot{\thepage\ of \pageref{LastPage}}
+
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -87,7 +93,8 @@
 \author{Bernhard St\"ocker} % Your name
 \institute[UCLA] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
-Recogizer Group GmbH\\ % Your institution for the title page
+Recogizer Group GmbH\\
+Predictive Analytics\\ % Your institution for the title page
 \medskip
 \textit{bernhard.stoecker@recogizer.de} % Your email address
 }
@@ -95,9 +102,13 @@ Recogizer Group GmbH\\ % Your institution for the title page
 
 \begin{document}
 
-\begin{frame}
-\titlepage % Print the title page as the first slide
-\end{frame}
+{
+  \setbeamertemplate{footline}{}
+  \begin{frame}
+    \titlepage % Print the title page as the first slide
+  \end{frame}
+}
+\addtocounter{framenumber}{-1}
 
 %\begin{frame}
 %\frametitle{Overview} % Table of contents slide, comment this block out to remove it
@@ -115,14 +126,14 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \Huge{\centerline{Queries and Problems}}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \begin{verbatim}
   def folder_by_parent(parent_id) do
     Folder
@@ -153,7 +164,7 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \begin{verbatim}
   def folder_by_parent(nil) do
     query = from f in Folder,
@@ -171,14 +182,14 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \centerline{What when I need data scoped to several organizations?}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \begin{verbatim}
   def folders_by_orgs(org_ids) do
     query = from f in Folder,
@@ -191,14 +202,14 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \centerline{What do queries look like in real life?}
 \end{frame}
 
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \begin{itemize}
 \item Belongs to an organization from a list (thinking of authentication/authorization)
 \item Is a rootfolder
@@ -209,7 +220,7 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \begin{verbatim}
   def active_rootfolder(org_ids) do
     Folder
@@ -227,7 +238,7 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Queries and Problems \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{Queries and Problems}
 \centerline{What if these statements can be expressed in a simple keyword list?}
 \end{frame}
 
@@ -237,7 +248,7 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{SimpleRepo}
 \begin{tiny}
 \begin{verbatim}
   def active_rootfolder(org_ids) do
@@ -266,7 +277,28 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{SimpleRepo}
+\centerline{Queries}
+\begin{itemize}
+\item \{key, nil\}
+\item \{key, value\}
+\item \{key, value\_list\}
+\item \{key, \{:like, pattern\}\}
+\item \{key, \{:not, nil\}\}
+\item \{key, \{:not, value\}\}
+\item \{key, \{:not, value\_list\}\}
+\item \{key, \{:not\_like, pattern\}\}
+\item \{key, \{$:<$, value\}\}
+\item \{key, \{$:<=$, value\}\}
+\item \{key, \{$:>$, value\}\}
+\item \{key, \{$:>=$, value\}\}
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{SimpleRepo}
 \centerline{Even shorter? Redefine Repo:}
 \begin{verbatim}
   defmodule YourApp.Repo do
@@ -289,7 +321,7 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{SimpleRepo}
 \centerline{Scope Functions}
 \begin{itemize}
 \item by\_id\_scoped\textbackslash4
@@ -306,28 +338,7 @@ Recogizer Group GmbH\\ % Your institution for the title page
 %------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
-\centerline{Queries}
-\begin{itemize}
-\item \{key, nil\}
-\item \{key, value\}
-\item \{key, value\_list\}
-\item \{key, \{:like, pattern\}\}
-\item \{key, \{:not, nil\}\}
-\item \{key, \{:not, value\}\}
-\item \{key, \{:not, value\_list\}\}
-\item \{key, \{:not\_like, pattern\}\}
-\item \{key, \{$:<$, value\}\}
-\item \{key, \{$:<=$, value\}\}
-\item \{key, \{$:>$, value\}\}
-\item \{key, \{$:>=$, value\}\}
-\end{itemize}
-\end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{SimpleRepo \hfill \includegraphics[width=0.05\textwidth]{recogizer_logo_small.png}}
+\frametitle{SimpleRepo}
 \centerline{You like it? Then use it. And if you have more ideas: Contribute}
 \begin{itemize}
 \item github.com/xofspades/simple\_repo
@@ -338,6 +349,8 @@ Recogizer Group GmbH\\ % Your institution for the title page
 
 %------------------------------------------------
 
+{
+\setbeamertemplate{footline}{}
 \begin{frame}
 \begin{Huge}
 \centerline{SimpleRepo \begin{small}used at \end{small} \includegraphics[align=c, width=0.15\textwidth]{recogizer_logo_EN_center.png}}
@@ -357,6 +370,7 @@ Using:
 \end{itemize}
 
 \end{frame}
+}
 
 %----------------------------------------------------------------------------------------
 
